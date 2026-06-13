@@ -424,9 +424,10 @@ class DemoPredictorRepository implements PredictorRepository {
           id: league.id,
           name: league.name,
           memberCount: league.memberCount,
-          rank: league.id == 'global'
-              ? max(1, 64006 - points * 811)
-              : max(1, league.rank - points ~/ 3),
+          rank:
+              league.id == 'global'
+                  ? max(1, 64006 - points * 811)
+                  : max(1, league.rank - points ~/ 3),
           totalPlayers: league.totalPlayers,
           points: points,
           isGlobal: league.isGlobal,

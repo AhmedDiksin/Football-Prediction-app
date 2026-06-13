@@ -69,9 +69,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             ),
             const SizedBox(height: 16),
             TextButton(
-              onPressed: _busy
-                  ? null
-                  : () => setState(() => _isSignUp = !_isSignUp),
+              onPressed:
+                  _busy ? null : () => setState(() => _isSignUp = !_isSignUp),
               child: Text(
                 _isSignUp
                     ? 'I already have an account'

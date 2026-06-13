@@ -163,13 +163,14 @@ class _MatchCardState extends ConsumerState<MatchCard> {
             const SizedBox(height: 10),
             TextButton.icon(
               key: ValueKey('simulateFinal_${match.id}'),
-              onPressed: () => ref
-                  .read(repositoryProvider)
-                  .simulateFinalScore(
-                    matchId: match.id,
-                    homeScore: _home,
-                    awayScore: _away,
-                  ),
+              onPressed:
+                  () => ref
+                      .read(repositoryProvider)
+                      .simulateFinalScore(
+                        matchId: match.id,
+                        homeScore: _home,
+                        awayScore: _away,
+                      ),
               icon: const Icon(Icons.sports_score_rounded),
               label: const Text('Simulate final'),
             ),
@@ -213,9 +214,8 @@ class _TeamColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: alignEnd
-          ? CrossAxisAlignment.end
-          : CrossAxisAlignment.start,
+      crossAxisAlignment:
+          alignEnd ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         CircleAvatar(
           radius: 26,
@@ -336,9 +336,8 @@ class _ScoreStepper extends StatelessWidget {
       children: [
         IconButton(
           key: ValueKey('${keyPrefix}ScoreUp'),
-          onPressed: locked
-              ? null
-              : () => onChanged((value + 1).clamp(0, 12).toInt()),
+          onPressed:
+              locked ? null : () => onChanged((value + 1).clamp(0, 12).toInt()),
           icon: const Icon(Icons.keyboard_arrow_up_rounded),
         ),
         Container(
@@ -356,9 +355,8 @@ class _ScoreStepper extends StatelessWidget {
         ),
         IconButton(
           key: ValueKey('${keyPrefix}ScoreDown'),
-          onPressed: locked
-              ? null
-              : () => onChanged((value - 1).clamp(0, 12).toInt()),
+          onPressed:
+              locked ? null : () => onChanged((value - 1).clamp(0, 12).toInt()),
           icon: const Icon(Icons.keyboard_arrow_down_rounded),
         ),
       ],

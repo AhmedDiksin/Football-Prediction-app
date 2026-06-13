@@ -153,9 +153,10 @@ class _SegmentButton extends StatelessWidget {
           duration: const Duration(milliseconds: 180),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: selected
-                ? Colors.white.withValues(alpha: 0.34)
-                : Colors.transparent,
+            color:
+                selected
+                    ? Colors.white.withValues(alpha: 0.34)
+                    : Colors.transparent,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(

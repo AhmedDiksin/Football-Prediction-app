@@ -34,7 +34,10 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('savePrediction_match-1')));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const ValueKey('simulateFinal_match-1')));
+    final simulateFinal = find.byKey(const ValueKey('simulateFinal_match-1'));
+    await tester.ensureVisible(simulateFinal);
+    await tester.pumpAndSettle();
+    await tester.tap(simulateFinal);
     await tester.pumpAndSettle();
 
     expect(find.textContaining('3 pts'), findsWidgets);

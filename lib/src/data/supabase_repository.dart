@@ -107,9 +107,10 @@ class SupabasePredictorRepository implements PredictorRepository {
 
   @override
   Future<LeagueSummary> createLeague(String name) async {
-    final result = await _client
-        .rpc('create_league', params: {'league_name': name})
-        .single();
+    final result =
+        await _client
+            .rpc('create_league', params: {'league_name': name})
+            .single();
     return _leagueFromMap(result);
   }
 
@@ -145,16 +146,18 @@ class SupabasePredictorRepository implements PredictorRepository {
       throw StateError('No Supabase user returned.');
     }
 
-    final profile = await _client
-        .from('profiles')
-        .select('display_name, avatar_color')
-        .eq('id', authUser.id)
-        .maybeSingle();
+    final profile =
+        await _client
+            .from('profiles')
+            .select('display_name, avatar_color')
+            .eq('id', authUser.id)
+            .maybeSingle();
 
     final colorText = profile?['avatar_color'] as String?;
-    final avatarColor = colorText == null
-        ? 0xff5af28a
-        : int.tryParse(colorText, radix: 16) ?? 0xff5af28a;
+    final avatarColor =
+        colorText == null
+            ? 0xff5af28a
+            : int.tryParse(colorText, radix: 16) ?? 0xff5af28a;
 
     final user = AppUser(
       id: authUser.id,
@@ -259,9 +262,10 @@ class SupabasePredictorRepository implements PredictorRepository {
 
   Prediction _predictionFromMap(Map<String, dynamic> row) {
     final scoreRows = row['prediction_scores'];
-    final score = scoreRows is List && scoreRows.isNotEmpty
-        ? scoreRows.first as Map<String, dynamic>
-        : null;
+    final score =
+        scoreRows is List && scoreRows.isNotEmpty
+            ? scoreRows.first as Map<String, dynamic>
+            : null;
     return Prediction(
       matchId: row['match_id'] as String,
       userId: row['user_id'] as String,

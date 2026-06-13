@@ -29,14 +29,13 @@ bool isExactPrediction({
 }
 
 List<LeaderboardEntry> rankLeaderboard(List<LeaderboardEntry> entries) {
-  final sorted = [...entries]
-    ..sort((a, b) {
-      final points = b.points.compareTo(a.points);
-      if (points != 0) return points;
-      final exact = b.exactScores.compareTo(a.exactScores);
-      if (exact != 0) return exact;
-      return a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase());
-    });
+  final sorted = [...entries]..sort((a, b) {
+    final points = b.points.compareTo(a.points);
+    if (points != 0) return points;
+    final exact = b.exactScores.compareTo(a.exactScores);
+    if (exact != 0) return exact;
+    return a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase());
+  });
 
   var previousPoints = -1;
   var previousExact = -1;

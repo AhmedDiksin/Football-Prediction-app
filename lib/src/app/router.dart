@@ -31,10 +31,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
       GoRoute(
         path: '/league/:id',
-        builder: (context, state) => LeagueDetailScreen(
-          leagueId: state.pathParameters['id']!,
-          leagueName: state.uri.queryParameters['name'] ?? 'League',
-        ),
+        builder:
+            (context, state) => LeagueDetailScreen(
+              leagueId: state.pathParameters['id']!,
+              leagueName: state.uri.queryParameters['name'] ?? 'League',
+            ),
       ),
     ],
   );

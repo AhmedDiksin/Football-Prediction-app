@@ -16,30 +16,31 @@ class LeaguesScreen extends ConsumerWidget {
     return leagues.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, _) => Center(child: Text(error.toString())),
-      data: (items) => ListView(
-        key: const ValueKey('leaguesList'),
-        padding: const EdgeInsets.fromLTRB(24, 18, 24, 28),
-        children: [
-          _LeaguePanel(leagues: items),
-          const SizedBox(height: 24),
-          _ActionCard(
-            key: const ValueKey('createLeagueCard'),
-            title: 'Create a new league',
-            body:
-                'Create a league to compete against friends with a unique invite code.',
-            icon: Icons.add_rounded,
-            onTap: () => _showCreateLeague(context, ref),
+      data:
+          (items) => ListView(
+            key: const ValueKey('leaguesList'),
+            padding: const EdgeInsets.fromLTRB(24, 18, 24, 28),
+            children: [
+              _LeaguePanel(leagues: items),
+              const SizedBox(height: 24),
+              _ActionCard(
+                key: const ValueKey('createLeagueCard'),
+                title: 'Create a new league',
+                body:
+                    'Create a league to compete against friends with a unique invite code.',
+                icon: Icons.add_rounded,
+                onTap: () => _showCreateLeague(context, ref),
+              ),
+              const SizedBox(height: 16),
+              _ActionCard(
+                key: const ValueKey('joinLeagueCard'),
+                title: 'Join a league',
+                body: 'Enter an invite code shared by a friend.',
+                icon: Icons.login_rounded,
+                onTap: () => _showJoinLeague(context, ref),
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
-          _ActionCard(
-            key: const ValueKey('joinLeagueCard'),
-            title: 'Join a league',
-            body: 'Enter an invite code shared by a friend.',
-            icon: Icons.login_rounded,
-            onTap: () => _showJoinLeague(context, ref),
-          ),
-        ],
-      ),
     );
   }
 
@@ -47,14 +48,15 @@ class LeaguesScreen extends ConsumerWidget {
     final controller = TextEditingController(text: 'Daxan');
     final name = await showDialog<String>(
       context: context,
-      builder: (context) => _InputDialog(
-        title: 'Create league',
-        fieldKey: const ValueKey('leagueNameField'),
-        actionKey: const ValueKey('confirmCreateLeague'),
-        controller: controller,
-        label: 'League name',
-        action: 'Create',
-      ),
+      builder:
+          (context) => _InputDialog(
+            title: 'Create league',
+            fieldKey: const ValueKey('leagueNameField'),
+            actionKey: const ValueKey('confirmCreateLeague'),
+            controller: controller,
+            label: 'League name',
+            action: 'Create',
+          ),
     );
     if (name == null || name.trim().isEmpty) return;
     try {
@@ -77,14 +79,15 @@ class LeaguesScreen extends ConsumerWidget {
     final controller = TextEditingController(text: 'DAXAN');
     final code = await showDialog<String>(
       context: context,
-      builder: (context) => _InputDialog(
-        title: 'Join league',
-        fieldKey: const ValueKey('inviteCodeField'),
-        actionKey: const ValueKey('confirmJoinLeague'),
-        controller: controller,
-        label: 'Invite code',
-        action: 'Join',
-      ),
+      builder:
+          (context) => _InputDialog(
+            title: 'Join league',
+            fieldKey: const ValueKey('inviteCodeField'),
+            actionKey: const ValueKey('confirmJoinLeague'),
+            controller: controller,
+            label: 'Invite code',
+            action: 'Join',
+          ),
     );
     if (code == null || code.trim().isEmpty) return;
     try {
@@ -155,9 +158,10 @@ class _LeaguePanel extends StatelessWidget {
             InkWell(
               key: ValueKey('league_${league.id}'),
               borderRadius: BorderRadius.circular(16),
-              onTap: () => context.push(
-                '/league/${league.id}?name=${Uri.encodeComponent(league.name)}',
-              ),
+              onTap:
+                  () => context.push(
+                    '/league/${league.id}?name=${Uri.encodeComponent(league.name)}',
+                  ),
               child: Container(
                 margin: const EdgeInsets.only(top: 10),
                 padding: const EdgeInsets.all(16),

@@ -24,101 +24,108 @@ class LeagueDetailScreen extends ConsumerWidget {
         child: leaderboard.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => Center(child: Text(error.toString())),
-          data: (entries) => ListView(
-            key: const ValueKey('leaderboardList'),
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 30),
-            children: [
-              Row(
+          data:
+              (entries) => ListView(
+                key: const ValueKey('leaderboardList'),
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 30),
                 children: [
-                  IconButton(
-                    key: const ValueKey('backFromLeaderboard'),
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(Icons.arrow_back_rounded, size: 32),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          leagueName,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headlineMedium
-                              ?.copyWith(fontWeight: FontWeight.w900),
-                        ),
-                        Text(
-                          '${entries.length} participants',
-                          style: const TextStyle(
-                            color: AppColors.textMuted,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 54),
-              const Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Position',
-                      style: TextStyle(
-                        color: AppColors.textMuted,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  _LeaderboardHeaderStats(),
-                ],
-              ),
-              const SizedBox(height: 22),
-              for (final entry in entries)
-                Container(
-                  key: ValueKey('leader_${entry.userId}'),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  child: Row(
+                  Row(
                     children: [
-                      SizedBox(
-                        width: 46,
-                        child: Text(
-                          '${entry.rank}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: entry.isCurrentUser
-                                ? AppColors.mint
-                                : Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                          ),
+                      IconButton(
+                        key: const ValueKey('backFromLeaderboard'),
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(Icons.arrow_back_rounded, size: 32),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              leagueName,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(fontWeight: FontWeight.w900),
+                            ),
+                            Text(
+                              '${entries.length} participants',
+                              style: const TextStyle(
+                                color: AppColors.textMuted,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Container(width: 1, height: 24, color: Colors.white24),
-                      const SizedBox(width: 20),
+                    ],
+                  ),
+                  const SizedBox(height: 54),
+                  const Row(
+                    children: [
                       Expanded(
                         child: Text(
-                          entry.displayName,
-                          overflow: TextOverflow.ellipsis,
+                          'Position',
                           style: TextStyle(
-                            color: entry.isCurrentUser
-                                ? AppColors.mint
-                                : Colors.white,
-                            fontSize: 21,
+                            color: AppColors.textMuted,
+                            fontSize: 17,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
                       ),
-                      LeagueRowStat(
-                        points: entry.points,
-                        exactScores: entry.exactScores,
-                      ),
+                      _LeaderboardHeaderStats(),
                     ],
                   ),
-                ),
-            ],
-          ),
+                  const SizedBox(height: 22),
+                  for (final entry in entries)
+                    Container(
+                      key: ValueKey('leader_${entry.userId}'),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 46,
+                            child: Text(
+                              '${entry.rank}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color:
+                                    entry.isCurrentUser
+                                        ? AppColors.mint
+                                        : Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 1,
+                            height: 24,
+                            color: Colors.white24,
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: Text(
+                              entry.displayName,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color:
+                                    entry.isCurrentUser
+                                        ? AppColors.mint
+                                        : Colors.white,
+                                fontSize: 21,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                          LeagueRowStat(
+                            points: entry.points,
+                            exactScores: entry.exactScores,
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
         ),
       ),
     );
