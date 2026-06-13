@@ -20,6 +20,7 @@ android/app/release/
 .env
 .env.*
 !.env.example
+.supabase-api-keys.local.json
 supabase/.branches/
 supabase/.temp/
 
