@@ -20,7 +20,7 @@ android {
 
     defaultConfig {
         applicationId 'com.ahmeddiksin.worldcup_predictor'
-        minSdkVersion 23
+        minSdkVersion flutter.minSdkVersion
         targetSdk flutter.targetSdkVersion
         versionCode flutter.versionCode
         versionName flutter.versionName
