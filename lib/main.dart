@@ -31,7 +31,10 @@ Future<void> main() async {
       supabaseAnonKey.isNotEmpty;
 
   if (canUseSupabase) {
-    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+    await Supabase.initialize(
+      url: supabaseUrl,
+      publishableKey: supabaseAnonKey,
+    );
   }
 
   runApp(

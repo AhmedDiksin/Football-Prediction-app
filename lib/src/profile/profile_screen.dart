@@ -14,7 +14,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _nameController = TextEditingController(text: 'Ahmed Diksin');
-  int _selectedColor = AppColors.mint.value;
+  Color _selectedColor = AppColors.mint;
   var _busy = false;
 
   @override
@@ -63,12 +63,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               children: [
                 for (final color in colors)
                   ChoiceChip(
-                    key: ValueKey('avatarColor_${color.value}'),
-                    selected: _selectedColor == color.value,
+                    key: ValueKey('avatarColor_${color.toARGB32()}'),
+                    selected: _selectedColor == color,
                     label: const SizedBox(width: 22, height: 22),
                     avatar: CircleAvatar(backgroundColor: color),
-                    onSelected: (_) =>
-                        setState(() => _selectedColor = color.value),
+                    onSelected: (_) => setState(() => _selectedColor = color),
                   ),
               ],
             ),
@@ -92,7 +91,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           .read(repositoryProvider)
           .saveProfile(
             displayName: _nameController.text.trim(),
-            avatarColor: _selectedColor,
+            avatarColor: _selectedColor.toARGB32(),
           );
     } catch (error) {
       if (!mounted) return;
