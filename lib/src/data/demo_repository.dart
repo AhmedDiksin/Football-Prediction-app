@@ -14,9 +14,11 @@ class DemoPredictorRepository implements PredictorRepository {
 
   final _uuid = const Uuid();
   final _userController = StreamController<AppUser?>.broadcast();
-  final _matchController = StreamController<List<MatchWithPrediction>>.broadcast();
+  final _matchController =
+      StreamController<List<MatchWithPrediction>>.broadcast();
   final _leagueController = StreamController<List<LeagueSummary>>.broadcast();
-  final Map<String, StreamController<List<LeaderboardEntry>>> _leaderboardControllers = {};
+  final Map<String, StreamController<List<LeaderboardEntry>>>
+  _leaderboardControllers = {};
 
   AppUser? _user;
   final List<Team> _teams = [];
@@ -35,14 +37,20 @@ class DemoPredictorRepository implements PredictorRepository {
   }
 
   @override
-  Future<AppUser> signIn({required String email, required String password}) async {
+  Future<AppUser> signIn({
+    required String email,
+    required String password,
+  }) async {
     _user = AppUser(id: 'demo-user', email: email, displayName: 'Ahmed Diksin');
     _emitAll();
     return _user!;
   }
 
   @override
-  Future<AppUser> signUp({required String email, required String password}) async {
+  Future<AppUser> signUp({
+    required String email,
+    required String password,
+  }) async {
     _user = AppUser(id: 'demo-user', email: email);
     _emitAll();
     return _user!;
@@ -56,9 +64,16 @@ class DemoPredictorRepository implements PredictorRepository {
   }
 
   @override
-  Future<void> saveProfile({required String displayName, required int avatarColor}) async {
-    final existing = _user ?? const AppUser(id: 'demo-user', email: 'friend@example.com');
-    _user = existing.copyWith(displayName: displayName, avatarColor: avatarColor);
+  Future<void> saveProfile({
+    required String displayName,
+    required int avatarColor,
+  }) async {
+    final existing =
+        _user ?? const AppUser(id: 'demo-user', email: 'friend@example.com');
+    _user = existing.copyWith(
+      displayName: displayName,
+      avatarColor: avatarColor,
+    );
     _emitAll();
   }
 
@@ -125,7 +140,9 @@ class DemoPredictorRepository implements PredictorRepository {
   @override
   Future<void> joinLeague(String inviteCode) async {
     _requireUser();
-    final index = _leagues.indexWhere((league) => league.inviteCode == inviteCode.trim().toUpperCase());
+    final index = _leagues.indexWhere(
+      (league) => league.inviteCode == inviteCode.trim().toUpperCase(),
+    );
     if (index == -1) {
       throw StateError('No league found for that invite code.');
     }
@@ -161,15 +178,64 @@ class DemoPredictorRepository implements PredictorRepository {
   }
 
   void _seed() {
-    final mexico = Team(id: 'team-mexico', name: 'Mexico', shortName: 'MEX', countryCode: 'MX');
-    final southAfrica = Team(id: 'team-south-africa', name: 'South Africa', shortName: 'RSA', countryCode: 'ZA');
-    final southKorea = Team(id: 'team-south-korea', name: 'South Korea', shortName: 'KOR', countryCode: 'KR');
-    final czechia = Team(id: 'team-czechia', name: 'Czechia', shortName: 'CZE', countryCode: 'CZ');
-    final canada = Team(id: 'team-canada', name: 'Canada', shortName: 'CAN', countryCode: 'CA');
-    final bosnia = Team(id: 'team-bosnia', name: 'Bosnia', shortName: 'BIH', countryCode: 'BA');
-    final usa = Team(id: 'team-usa', name: 'United States', shortName: 'USA', countryCode: 'US');
-    final paraguay = Team(id: 'team-paraguay', name: 'Paraguay', shortName: 'PAR', countryCode: 'PY');
-    _teams.addAll([mexico, southAfrica, southKorea, czechia, canada, bosnia, usa, paraguay]);
+    final mexico = Team(
+      id: 'team-mexico',
+      name: 'Mexico',
+      shortName: 'MEX',
+      countryCode: 'MX',
+    );
+    final southAfrica = Team(
+      id: 'team-south-africa',
+      name: 'South Africa',
+      shortName: 'RSA',
+      countryCode: 'ZA',
+    );
+    final southKorea = Team(
+      id: 'team-south-korea',
+      name: 'South Korea',
+      shortName: 'KOR',
+      countryCode: 'KR',
+    );
+    final czechia = Team(
+      id: 'team-czechia',
+      name: 'Czechia',
+      shortName: 'CZE',
+      countryCode: 'CZ',
+    );
+    final canada = Team(
+      id: 'team-canada',
+      name: 'Canada',
+      shortName: 'CAN',
+      countryCode: 'CA',
+    );
+    final bosnia = Team(
+      id: 'team-bosnia',
+      name: 'Bosnia',
+      shortName: 'BIH',
+      countryCode: 'BA',
+    );
+    final usa = Team(
+      id: 'team-usa',
+      name: 'United States',
+      shortName: 'USA',
+      countryCode: 'US',
+    );
+    final paraguay = Team(
+      id: 'team-paraguay',
+      name: 'Paraguay',
+      shortName: 'PAR',
+      countryCode: 'PY',
+    );
+    _teams.addAll([
+      mexico,
+      southAfrica,
+      southKorea,
+      czechia,
+      canada,
+      bosnia,
+      usa,
+      paraguay,
+    ]);
 
     final now = DateTime.now().toUtc();
     _matches.addAll([
@@ -210,34 +276,80 @@ class DemoPredictorRepository implements PredictorRepository {
     ]);
 
     _friends.addAll(const [
-      LeaderboardEntry(userId: 'friend-1', displayName: 'Ammar Tube', rank: 1, points: 8, exactScores: 2),
-      LeaderboardEntry(userId: 'friend-2', displayName: 'Muhammad', rank: 2, points: 7, exactScores: 1),
-      LeaderboardEntry(userId: 'friend-3', displayName: 'Heba Alasady', rank: 4, points: 6, exactScores: 0),
-      LeaderboardEntry(userId: 'friend-4', displayName: 'ORAS', rank: 4, points: 6, exactScores: 0),
-      LeaderboardEntry(userId: 'friend-5', displayName: 'Haider', rank: 7, points: 5, exactScores: 1),
-      LeaderboardEntry(userId: 'friend-6', displayName: 'Aboody', rank: 8, points: 4, exactScores: 0),
-      LeaderboardEntry(userId: 'friend-7', displayName: 'Summer Oras', rank: 9, points: 2, exactScores: 0),
+      LeaderboardEntry(
+        userId: 'friend-1',
+        displayName: 'Ammar Tube',
+        rank: 1,
+        points: 8,
+        exactScores: 2,
+      ),
+      LeaderboardEntry(
+        userId: 'friend-2',
+        displayName: 'Muhammad',
+        rank: 2,
+        points: 7,
+        exactScores: 1,
+      ),
+      LeaderboardEntry(
+        userId: 'friend-3',
+        displayName: 'Heba Alasady',
+        rank: 4,
+        points: 6,
+        exactScores: 0,
+      ),
+      LeaderboardEntry(
+        userId: 'friend-4',
+        displayName: 'ORAS',
+        rank: 4,
+        points: 6,
+        exactScores: 0,
+      ),
+      LeaderboardEntry(
+        userId: 'friend-5',
+        displayName: 'Haider',
+        rank: 7,
+        points: 5,
+        exactScores: 1,
+      ),
+      LeaderboardEntry(
+        userId: 'friend-6',
+        displayName: 'Aboody',
+        rank: 8,
+        points: 4,
+        exactScores: 0,
+      ),
+      LeaderboardEntry(
+        userId: 'friend-7',
+        displayName: 'Summer Oras',
+        rank: 9,
+        points: 2,
+        exactScores: 0,
+      ),
     ]);
 
-    _leagues.add(const LeagueSummary(
-      id: 'global',
-      name: 'Global',
-      memberCount: 689057,
-      rank: 64006,
-      totalPlayers: 689057,
-      points: 0,
-      isGlobal: true,
-    ));
-    _leagues.add(const LeagueSummary(
-      id: 'daxan',
-      name: 'Daxan',
-      memberCount: 10,
-      rank: 2,
-      totalPlayers: 10,
-      points: 0,
-      isGlobal: false,
-      inviteCode: 'DAXAN',
-    ));
+    _leagues.add(
+      const LeagueSummary(
+        id: 'global',
+        name: 'Global',
+        memberCount: 689057,
+        rank: 64006,
+        totalPlayers: 689057,
+        points: 0,
+        isGlobal: true,
+      ),
+    );
+    _leagues.add(
+      const LeagueSummary(
+        id: 'daxan',
+        name: 'Daxan',
+        memberCount: 10,
+        rank: 2,
+        totalPlayers: 10,
+        points: 0,
+        isGlobal: false,
+        inviteCode: 'DAXAN',
+      ),
+    );
   }
 
   void _scorePredictionsFor(String matchId, int homeScore, int awayScore) {
@@ -269,8 +381,12 @@ class DemoPredictorRepository implements PredictorRepository {
     return user;
   }
 
-  int _currentUserPoints() => _predictions.values.fold(0, (total, prediction) => total + (prediction.points ?? 0));
-  int _currentUserExact() => _predictions.values.where((prediction) => prediction.exact).length;
+  int _currentUserPoints() => _predictions.values.fold(
+    0,
+    (total, prediction) => total + (prediction.points ?? 0),
+  );
+  int _currentUserExact() =>
+      _predictions.values.where((prediction) => prediction.exact).length;
 
   void _emitAll() {
     _userController.add(_user);
@@ -282,17 +398,22 @@ class DemoPredictorRepository implements PredictorRepository {
   }
 
   void _emitMatches() {
-    _matchController.add([
-      for (final match in _matches)
-        MatchWithPrediction(
-          match: match,
-          prediction: _predictions[match.id],
-          homePickPercent: match.id.hashCode.abs() % 40 + 25,
-          awayPickPercent: match.awayTeam.id.hashCode.abs() % 30 + 18,
-          drawPickPercent: 100 -
-              ((match.id.hashCode.abs() % 40 + 25) + (match.awayTeam.id.hashCode.abs() % 30 + 18)).clamp(0, 95),
-        ),
-    ]..sort((a, b) => a.match.kickoffAt.compareTo(b.match.kickoffAt)));
+    _matchController.add(
+      [
+        for (final match in _matches)
+          MatchWithPrediction(
+            match: match,
+            prediction: _predictions[match.id],
+            homePickPercent: match.id.hashCode.abs() % 40 + 25,
+            awayPickPercent: match.awayTeam.id.hashCode.abs() % 30 + 18,
+            drawPickPercent:
+                100 -
+                ((match.id.hashCode.abs() % 40 + 25) +
+                        (match.awayTeam.id.hashCode.abs() % 30 + 18))
+                    .clamp(0, 95),
+          ),
+      ]..sort((a, b) => a.match.kickoffAt.compareTo(b.match.kickoffAt)),
+    );
   }
 
   void _emitLeagues() {
@@ -303,7 +424,9 @@ class DemoPredictorRepository implements PredictorRepository {
           id: league.id,
           name: league.name,
           memberCount: league.memberCount,
-          rank: league.id == 'global' ? max(1, 64006 - points * 811) : max(1, league.rank - points ~/ 3),
+          rank: league.id == 'global'
+              ? max(1, 64006 - points * 811)
+              : max(1, league.rank - points ~/ 3),
           totalPlayers: league.totalPlayers,
           points: points,
           isGlobal: league.isGlobal,
@@ -331,6 +454,9 @@ class DemoPredictorRepository implements PredictorRepository {
   String _inviteCode() {
     const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     final random = Random();
-    return List.generate(6, (_) => alphabet[random.nextInt(alphabet.length)]).join();
+    return List.generate(
+      6,
+      (_) => alphabet[random.nextInt(alphabet.length)],
+    ).join();
   }
 }

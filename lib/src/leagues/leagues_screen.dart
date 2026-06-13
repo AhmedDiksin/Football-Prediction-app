@@ -25,7 +25,8 @@ class LeaguesScreen extends ConsumerWidget {
           _ActionCard(
             key: const ValueKey('createLeagueCard'),
             title: 'Create a new league',
-            body: 'Create a league to compete against friends with a unique invite code.',
+            body:
+                'Create a league to compete against friends with a unique invite code.',
             icon: Icons.add_rounded,
             onTap: () => _showCreateLeague(context, ref),
           ),
@@ -59,11 +60,15 @@ class LeaguesScreen extends ConsumerWidget {
     try {
       final league = await ref.read(repositoryProvider).createLeague(name);
       if (context.mounted) {
-        context.push('/league/${league.id}?name=${Uri.encodeComponent(league.name)}');
+        context.push(
+          '/league/${league.id}?name=${Uri.encodeComponent(league.name)}',
+        );
       }
     } catch (error) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error.toString())));
       }
     }
   }
@@ -85,11 +90,15 @@ class LeaguesScreen extends ConsumerWidget {
     try {
       await ref.read(repositoryProvider).joinLeague(code);
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('League joined')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('League joined')));
       }
     } catch (error) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error.toString())));
       }
     }
   }
@@ -114,17 +123,31 @@ class _LeaguePanel extends StatelessWidget {
           Text(
             'My leagues',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w900,
-                ),
+              color: Colors.black,
+              fontWeight: FontWeight.w900,
+            ),
           ),
           const SizedBox(height: 24),
           const Row(
             children: [
               Expanded(
-                child: Text('League', style: TextStyle(color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w800)),
+                child: Text(
+                  'League',
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               ),
-              Text('Position', style: TextStyle(color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w800)),
+              Text(
+                'Position',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -132,7 +155,9 @@ class _LeaguePanel extends StatelessWidget {
             InkWell(
               key: ValueKey('league_${league.id}'),
               borderRadius: BorderRadius.circular(16),
-              onTap: () => context.push('/league/${league.id}?name=${Uri.encodeComponent(league.name)}'),
+              onTap: () => context.push(
+                '/league/${league.id}?name=${Uri.encodeComponent(league.name)}',
+              ),
               child: Container(
                 margin: const EdgeInsets.only(top: 10),
                 padding: const EdgeInsets.all(16),
@@ -142,13 +167,22 @@ class _LeaguePanel extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(league.isGlobal ? Icons.public_rounded : Icons.flag_rounded, color: Colors.black),
+                    Icon(
+                      league.isGlobal
+                          ? Icons.public_rounded
+                          : Icons.flag_rounded,
+                      color: Colors.black,
+                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         league.name,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(color: Colors.black, fontSize: 21, fontWeight: FontWeight.w800),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 21,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ),
                     Column(
@@ -156,11 +190,18 @@ class _LeaguePanel extends StatelessWidget {
                       children: [
                         Text(
                           league.rank.toString(),
-                          style: const TextStyle(color: Colors.black, fontSize: 26, fontWeight: FontWeight.w900),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 26,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                         Text(
                           league.totalPlayers.toString(),
-                          style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w800),
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                       ],
                     ),
@@ -205,9 +246,24 @@ class _ActionCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(color: Colors.black, fontSize: 26, height: 1.05, fontWeight: FontWeight.w900)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 26,
+                      height: 1.05,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                   const SizedBox(height: 18),
-                  Text(body, style: const TextStyle(color: Colors.black, fontSize: 17, height: 1.25)),
+                  Text(
+                    body,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 17,
+                      height: 1.25,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -253,7 +309,10 @@ class _InputDialog extends StatelessWidget {
         decoration: InputDecoration(labelText: label),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancel'),
+        ),
         FilledButton(
           key: actionKey,
           onPressed: () => Navigator.of(context).pop(controller.text),
@@ -265,7 +324,11 @@ class _InputDialog extends StatelessWidget {
 }
 
 class LeagueRowStat extends StatelessWidget {
-  const LeagueRowStat({required this.points, required this.exactScores, super.key});
+  const LeagueRowStat({
+    required this.points,
+    required this.exactScores,
+    super.key,
+  });
 
   final int points;
   final int exactScores;
@@ -277,11 +340,17 @@ class LeagueRowStat extends StatelessWidget {
       children: [
         const PointGem(size: 16),
         const SizedBox(width: 8),
-        Text('$points', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+        Text(
+          '$points',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+        ),
         const SizedBox(width: 22),
         const PointGem(size: 16, color: AppColors.lime),
         const SizedBox(width: 8),
-        Text('$exactScores', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+        Text(
+          '$exactScores',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+        ),
       ],
     );
   }

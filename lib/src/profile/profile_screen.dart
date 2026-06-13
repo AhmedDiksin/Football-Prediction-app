@@ -25,7 +25,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const colors = [AppColors.mint, AppColors.cyan, AppColors.lime, AppColors.blue, Color(0xffff6bcb)];
+    const colors = [
+      AppColors.mint,
+      AppColors.cyan,
+      AppColors.lime,
+      AppColors.blue,
+      Color(0xffff6bcb),
+    ];
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -35,7 +41,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             const SizedBox(height: 42),
             Text(
               'Choose your name',
-              style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w900),
+              style: Theme.of(
+                context,
+              ).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w900),
             ),
             const SizedBox(height: 10),
             const Text(
@@ -59,7 +67,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     selected: _selectedColor == color.value,
                     label: const SizedBox(width: 22, height: 22),
                     avatar: CircleAvatar(backgroundColor: color),
-                    onSelected: (_) => setState(() => _selectedColor = color.value),
+                    onSelected: (_) =>
+                        setState(() => _selectedColor = color.value),
                   ),
               ],
             ),
@@ -79,13 +88,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     if (_nameController.text.trim().isEmpty) return;
     setState(() => _busy = true);
     try {
-      await ref.read(repositoryProvider).saveProfile(
+      await ref
+          .read(repositoryProvider)
+          .saveProfile(
             displayName: _nameController.text.trim(),
             avatarColor: _selectedColor,
           );
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
     } finally {
       if (mounted) setState(() => _busy = false);
     }

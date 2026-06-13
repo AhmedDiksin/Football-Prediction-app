@@ -23,14 +23,26 @@ class SupabasePredictorRepository implements PredictorRepository {
   }
 
   @override
-  Future<AppUser> signIn({required String email, required String password}) async {
-    final response = await _client.auth.signInWithPassword(email: email, password: password);
+  Future<AppUser> signIn({
+    required String email,
+    required String password,
+  }) async {
+    final response = await _client.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
     return _hydrateAuthUser(response.user);
   }
 
   @override
-  Future<AppUser> signUp({required String email, required String password}) async {
-    final response = await _client.auth.signUp(email: email, password: password);
+  Future<AppUser> signUp({
+    required String email,
+    required String password,
+  }) async {
+    final response = await _client.auth.signUp(
+      email: email,
+      password: password,
+    );
     return _hydrateAuthUser(response.user);
   }
 
@@ -38,11 +50,17 @@ class SupabasePredictorRepository implements PredictorRepository {
   Future<void> signOut() => _client.auth.signOut();
 
   @override
-  Future<void> saveProfile({required String displayName, required int avatarColor}) async {
-    await _client.rpc('create_profile', params: {
-      'display_name': displayName,
-      'avatar_color': avatarColor.toRadixString(16).padLeft(8, '0'),
-    });
+  Future<void> saveProfile({
+    required String displayName,
+    required int avatarColor,
+  }) async {
+    await _client.rpc(
+      'create_profile',
+      params: {
+        'display_name': displayName,
+        'avatar_color': avatarColor.toRadixString(16).padLeft(8, '0'),
+      },
+    );
     _cachedUser = await _loadCurrentUser();
   }
 
@@ -61,36 +79,46 @@ class SupabasePredictorRepository implements PredictorRepository {
     required int homeScore,
     required int awayScore,
   }) async {
-    await _client.rpc('upsert_prediction', params: {
-      'match_id': matchId,
-      'home_score': homeScore,
-      'away_score': awayScore,
-    });
+    await _client.rpc(
+      'upsert_prediction',
+      params: {
+        'match_id': matchId,
+        'home_score': homeScore,
+        'away_score': awayScore,
+      },
+    );
   }
 
   @override
   Stream<List<LeagueSummary>> watchLeagues() {
-    return Stream<int>.periodic(const Duration(seconds: 15), (tick) => tick)
-        .startWith(0)
-        .asyncMap((_) => _fetchLeagues());
+    return Stream<int>.periodic(
+      const Duration(seconds: 15),
+      (tick) => tick,
+    ).startWith(0).asyncMap((_) => _fetchLeagues());
   }
 
   @override
   Stream<List<LeaderboardEntry>> watchLeaderboard(String leagueId) {
-    return Stream<int>.periodic(const Duration(seconds: 10), (tick) => tick)
-        .startWith(0)
-        .asyncMap((_) => _fetchLeaderboard(leagueId));
+    return Stream<int>.periodic(
+      const Duration(seconds: 10),
+      (tick) => tick,
+    ).startWith(0).asyncMap((_) => _fetchLeaderboard(leagueId));
   }
 
   @override
   Future<LeagueSummary> createLeague(String name) async {
-    final result = await _client.rpc('create_league', params: {'league_name': name}).single();
+    final result = await _client
+        .rpc('create_league', params: {'league_name': name})
+        .single();
     return _leagueFromMap(result);
   }
 
   @override
   Future<void> joinLeague(String inviteCode) async {
-    await _client.rpc('join_league', params: {'invite_code': inviteCode.trim().toUpperCase()});
+    await _client.rpc(
+      'join_league',
+      params: {'invite_code': inviteCode.trim().toUpperCase()},
+    );
   }
 
   @override
@@ -124,7 +152,9 @@ class SupabasePredictorRepository implements PredictorRepository {
         .maybeSingle();
 
     final colorText = profile?['avatar_color'] as String?;
-    final avatarColor = colorText == null ? 0xff5af28a : int.tryParse(colorText, radix: 16) ?? 0xff5af28a;
+    final avatarColor = colorText == null
+        ? 0xff5af28a
+        : int.tryParse(colorText, radix: 16) ?? 0xff5af28a;
 
     final user = AppUser(
       id: authUser.id,
@@ -136,13 +166,18 @@ class SupabasePredictorRepository implements PredictorRepository {
     return user;
   }
 
-  Future<List<MatchWithPrediction>> _hydrateMatches(List<Map<String, dynamic>> matchRows) async {
+  Future<List<MatchWithPrediction>> _hydrateMatches(
+    List<Map<String, dynamic>> matchRows,
+  ) async {
     if (matchRows.isEmpty) return [];
     final teamIds = <String>{
       for (final row in matchRows) row['home_team_id'] as String,
       for (final row in matchRows) row['away_team_id'] as String,
     };
-    final teamRows = await _client.from('teams').select().inFilter('id', teamIds.toList());
+    final teamRows = await _client
+        .from('teams')
+        .select()
+        .inFilter('id', teamIds.toList());
     final typedTeamRows = teamRows.cast<Map<String, dynamic>>();
     final teams = {
       for (final row in typedTeamRows) row['id'] as String: _teamFromMap(row),
@@ -155,13 +190,16 @@ class SupabasePredictorRepository implements PredictorRepository {
     } else {
       final rows = await _client
           .from('predictions')
-          .select('match_id, user_id, home_score, away_score, prediction_scores(points, exact)')
+          .select(
+            'match_id, user_id, home_score, away_score, prediction_scores(points, exact)',
+          )
           .eq('user_id', userId)
           .inFilter('match_id', matchRows.map((row) => row['id']).toList());
       predictionRows = rows.cast<Map<String, dynamic>>();
     }
     final predictions = {
-      for (final row in predictionRows) row['match_id'] as String: _predictionFromMap(row),
+      for (final row in predictionRows)
+        row['match_id'] as String: _predictionFromMap(row),
     };
 
     return [
@@ -175,12 +213,21 @@ class SupabasePredictorRepository implements PredictorRepository {
 
   Future<List<LeagueSummary>> _fetchLeagues() async {
     final rows = await _client.rpc('get_my_leagues');
-    return [for (final row in rows as List<dynamic>) _leagueFromMap(row as Map<String, dynamic>)];
+    return [
+      for (final row in rows as List<dynamic>)
+        _leagueFromMap(row as Map<String, dynamic>),
+    ];
   }
 
   Future<List<LeaderboardEntry>> _fetchLeaderboard(String leagueId) async {
-    final rows = await _client.rpc('get_leaderboard', params: {'league_id': leagueId});
-    return [for (final row in rows as List<dynamic>) _leaderboardFromMap(row as Map<String, dynamic>)];
+    final rows = await _client.rpc(
+      'get_leaderboard',
+      params: {'league_id': leagueId},
+    );
+    return [
+      for (final row in rows as List<dynamic>)
+        _leaderboardFromMap(row as Map<String, dynamic>),
+    ];
   }
 
   Team _teamFromMap(Map<String, dynamic> row) {
@@ -193,7 +240,10 @@ class SupabasePredictorRepository implements PredictorRepository {
     );
   }
 
-  FixtureMatch _matchFromMap(Map<String, dynamic> row, Map<String, Team> teams) {
+  FixtureMatch _matchFromMap(
+    Map<String, dynamic> row,
+    Map<String, Team> teams,
+  ) {
     return FixtureMatch(
       id: row['id'] as String,
       homeTeam: teams[row['home_team_id']]!,
@@ -209,7 +259,9 @@ class SupabasePredictorRepository implements PredictorRepository {
 
   Prediction _predictionFromMap(Map<String, dynamic> row) {
     final scoreRows = row['prediction_scores'];
-    final score = scoreRows is List && scoreRows.isNotEmpty ? scoreRows.first as Map<String, dynamic> : null;
+    final score = scoreRows is List && scoreRows.isNotEmpty
+        ? scoreRows.first as Map<String, dynamic>
+        : null;
     return Prediction(
       matchId: row['match_id'] as String,
       userId: row['user_id'] as String,

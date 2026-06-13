@@ -44,17 +44,16 @@ List<LeaderboardEntry> rankLeaderboard(List<LeaderboardEntry> entries) {
 
   return [
     for (var index = 0; index < sorted.length; index++)
-      sorted[index].copyRank(
-        () {
-          final entry = sorted[index];
-          if (entry.points != previousPoints || entry.exactScores != previousExact) {
-            currentRank = index + 1;
-            previousPoints = entry.points;
-            previousExact = entry.exactScores;
-          }
-          return currentRank;
-        }(),
-      ),
+      sorted[index].copyRank(() {
+        final entry = sorted[index];
+        if (entry.points != previousPoints ||
+            entry.exactScores != previousExact) {
+          currentRank = index + 1;
+          previousPoints = entry.points;
+          previousExact = entry.exactScores;
+        }
+        return currentRank;
+      }()),
   ];
 }
 

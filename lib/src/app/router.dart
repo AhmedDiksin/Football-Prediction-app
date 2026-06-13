@@ -24,7 +24,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       GoRoute(path: '/auth', builder: (context, state) => const AuthScreen()),
-      GoRoute(path: '/profile', builder: (context, state) => const ProfileScreen()),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const ProfileScreen(),
+      ),
       GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
       GoRoute(
         path: '/league/:id',

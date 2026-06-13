@@ -20,7 +20,10 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('authSubmitButton')));
     await tester.pumpAndSettle();
 
-    await tester.enterText(find.byKey(const ValueKey('displayNameField')), 'Flow Tester');
+    await tester.enterText(
+      find.byKey(const ValueKey('displayNameField')),
+      'Flow Tester',
+    );
     await tester.tap(find.byKey(const ValueKey('saveProfileButton')));
     await tester.pumpAndSettle();
 

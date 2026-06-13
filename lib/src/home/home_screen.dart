@@ -52,10 +52,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   const SizedBox(height: 20),
                   Row(
                     children: [
-                      Expanded(child: _SegmentedTabs(value: _tab, onChanged: (value) => setState(() => _tab = value))),
+                      Expanded(
+                        child: _SegmentedTabs(
+                          value: _tab,
+                          onChanged: (value) => setState(() => _tab = value),
+                        ),
+                      ),
                       const SizedBox(width: 14),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 10,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.surface,
                           borderRadius: BorderRadius.circular(22),
@@ -64,7 +72,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           children: [
                             const PointGem(size: 18, color: AppColors.cyan),
                             const SizedBox(width: 8),
-                            Text('$points pts', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                            Text(
+                              '$points pts',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -76,10 +90,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Expanded(
               child: IndexedStack(
                 index: _tab,
-                children: const [
-                  MatchesScreen(),
-                  LeaguesScreen(),
-                ],
+                children: const [MatchesScreen(), LeaguesScreen()],
               ),
             ),
           ],
@@ -106,8 +117,16 @@ class _SegmentedTabs extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _SegmentButton(label: 'Matches', selected: value == 0, onTap: () => onChanged(0)),
-          _SegmentButton(label: 'Leagues', selected: value == 1, onTap: () => onChanged(1)),
+          _SegmentButton(
+            label: 'Matches',
+            selected: value == 0,
+            onTap: () => onChanged(0),
+          ),
+          _SegmentButton(
+            label: 'Leagues',
+            selected: value == 1,
+            onTap: () => onChanged(1),
+          ),
         ],
       ),
     );
@@ -115,7 +134,11 @@ class _SegmentedTabs extends StatelessWidget {
 }
 
 class _SegmentButton extends StatelessWidget {
-  const _SegmentButton({required this.label, required this.selected, required this.onTap});
+  const _SegmentButton({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   final String label;
   final bool selected;
@@ -130,7 +153,9 @@ class _SegmentButton extends StatelessWidget {
           duration: const Duration(milliseconds: 180),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: selected ? Colors.white.withValues(alpha: 0.34) : Colors.transparent,
+            color: selected
+                ? Colors.white.withValues(alpha: 0.34)
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(

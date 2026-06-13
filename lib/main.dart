@@ -17,9 +17,14 @@ Future<void> main() async {
 
   const supabaseUrlOverride = String.fromEnvironment('SUPABASE_URL');
   const supabaseAnonKeyOverride = String.fromEnvironment('SUPABASE_ANON_KEY');
-  final supabaseUrl = supabaseUrlOverride.isNotEmpty ? supabaseUrlOverride : dotenv.maybeGet('SUPABASE_URL');
-  final supabaseAnonKey = supabaseAnonKeyOverride.isNotEmpty ? supabaseAnonKeyOverride : dotenv.maybeGet('SUPABASE_ANON_KEY');
-  final canUseSupabase = appMode == 'supabase' &&
+  final supabaseUrl = supabaseUrlOverride.isNotEmpty
+      ? supabaseUrlOverride
+      : dotenv.maybeGet('SUPABASE_URL');
+  final supabaseAnonKey = supabaseAnonKeyOverride.isNotEmpty
+      ? supabaseAnonKeyOverride
+      : dotenv.maybeGet('SUPABASE_ANON_KEY');
+  final canUseSupabase =
+      appMode == 'supabase' &&
       supabaseUrl != null &&
       supabaseUrl.isNotEmpty &&
       supabaseAnonKey != null &&
@@ -32,7 +37,9 @@ Future<void> main() async {
   runApp(
     ProviderScope(
       overrides: [
-        appModeProvider.overrideWithValue(canUseSupabase ? AppMode.supabase : AppMode.demo),
+        appModeProvider.overrideWithValue(
+          canUseSupabase ? AppMode.supabase : AppMode.demo,
+        ),
       ],
       child: const PredictorApp(),
     ),

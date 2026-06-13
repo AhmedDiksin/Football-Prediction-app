@@ -36,7 +36,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             const SizedBox(height: 42),
             Text(
               _isSignUp ? 'Create account' : 'Welcome back',
-              style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w900),
+              style: Theme.of(
+                context,
+              ).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w900),
             ),
             const SizedBox(height: 10),
             const Text(
@@ -61,12 +63,20 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             ElevatedButton(
               key: const ValueKey('authSubmitButton'),
               onPressed: _busy ? null : _submit,
-              child: Text(_busy ? 'Please wait' : (_isSignUp ? 'Sign up' : 'Sign in')),
+              child: Text(
+                _busy ? 'Please wait' : (_isSignUp ? 'Sign up' : 'Sign in'),
+              ),
             ),
             const SizedBox(height: 16),
             TextButton(
-              onPressed: _busy ? null : () => setState(() => _isSignUp = !_isSignUp),
-              child: Text(_isSignUp ? 'I already have an account' : 'Create a new account'),
+              onPressed: _busy
+                  ? null
+                  : () => setState(() => _isSignUp = !_isSignUp),
+              child: Text(
+                _isSignUp
+                    ? 'I already have an account'
+                    : 'Create a new account',
+              ),
             ),
           ],
         ),
@@ -79,13 +89,21 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     final repo = ref.read(repositoryProvider);
     try {
       if (_isSignUp) {
-        await repo.signUp(email: _emailController.text.trim(), password: _passwordController.text);
+        await repo.signUp(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
       } else {
-        await repo.signIn(email: _emailController.text.trim(), password: _passwordController.text);
+        await repo.signIn(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
       }
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
     } finally {
       if (mounted) setState(() => _busy = false);
     }

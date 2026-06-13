@@ -67,13 +67,10 @@ class FixtureMatch {
   final String? venue;
 
   bool get isLocked => DateTime.now().toUtc().isAfter(kickoffAt.toUtc());
-  bool get hasFinalScore => status == MatchStatus.finished && homeScore != null && awayScore != null;
+  bool get hasFinalScore =>
+      status == MatchStatus.finished && homeScore != null && awayScore != null;
 
-  FixtureMatch copyWith({
-    MatchStatus? status,
-    int? homeScore,
-    int? awayScore,
-  }) {
+  FixtureMatch copyWith({MatchStatus? status, int? homeScore, int? awayScore}) {
     return FixtureMatch(
       id: id,
       homeTeam: homeTeam,

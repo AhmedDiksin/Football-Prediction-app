@@ -30,6 +30,7 @@ final leaguesProvider = StreamProvider<List<LeagueSummary>>((ref) {
   return ref.watch(repositoryProvider).watchLeagues();
 });
 
-final leaderboardProvider = StreamProvider.family<List<LeaderboardEntry>, String>((ref, leagueId) {
-  return ref.watch(repositoryProvider).watchLeaderboard(leagueId);
-});
+final leaderboardProvider =
+    StreamProvider.family<List<LeaderboardEntry>, String>((ref, leagueId) {
+      return ref.watch(repositoryProvider).watchLeaderboard(leagueId);
+    });

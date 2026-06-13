@@ -25,7 +25,9 @@ class MatchesScreen extends ConsumerWidget {
             for (final entry in grouped.entries) ...[
               Text(
                 _dayLabel(entry.key),
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w900),
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w900,
+                ),
               ),
               const SizedBox(height: 16),
               for (final item in entry.value) ...[
@@ -40,7 +42,9 @@ class MatchesScreen extends ConsumerWidget {
     );
   }
 
-  Map<DateTime, List<MatchWithPrediction>> _groupByDay(List<MatchWithPrediction> items) {
+  Map<DateTime, List<MatchWithPrediction>> _groupByDay(
+    List<MatchWithPrediction> items,
+  ) {
     final grouped = <DateTime, List<MatchWithPrediction>>{};
     for (final item in items) {
       final local = item.match.kickoffAt.toLocal();
@@ -123,7 +127,9 @@ class _MatchCardState extends ConsumerState<MatchCard> {
                 onHomeChanged: (value) => setState(() => _home = value),
                 onAwayChanged: (value) => setState(() => _away = value),
               ),
-              Expanded(child: _TeamColumn(team: match.awayTeam, alignEnd: true)),
+              Expanded(
+                child: _TeamColumn(team: match.awayTeam, alignEnd: true),
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -133,7 +139,10 @@ class _MatchCardState extends ConsumerState<MatchCard> {
                 child: Text(
                   '${DateFormat.Hm().format(match.kickoffAt.toLocal())} • ${match.stage}',
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: AppColors.textMuted, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                    color: AppColors.textMuted,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               if (!locked)
@@ -149,11 +158,14 @@ class _MatchCardState extends ConsumerState<MatchCard> {
           ),
           const SizedBox(height: 12),
           _PickSplit(item: widget.item),
-          if (appMode == AppMode.demo && match.status != MatchStatus.finished) ...[
+          if (appMode == AppMode.demo &&
+              match.status != MatchStatus.finished) ...[
             const SizedBox(height: 10),
             TextButton.icon(
               key: ValueKey('simulateFinal_${match.id}'),
-              onPressed: () => ref.read(repositoryProvider).simulateFinalScore(
+              onPressed: () => ref
+                  .read(repositoryProvider)
+                  .simulateFinalScore(
                     matchId: match.id,
                     homeScore: _home,
                     awayScore: _away,
@@ -170,16 +182,22 @@ class _MatchCardState extends ConsumerState<MatchCard> {
   Future<void> _save() async {
     setState(() => _busy = true);
     try {
-      await ref.read(repositoryProvider).upsertPrediction(
+      await ref
+          .read(repositoryProvider)
+          .upsertPrediction(
             matchId: widget.item.match.id,
             homeScore: _home,
             awayScore: _away,
           );
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Prediction saved')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Prediction saved')));
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -195,14 +213,20 @@ class _TeamColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: alignEnd ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment: alignEnd
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       children: [
         CircleAvatar(
           radius: 26,
           backgroundColor: Colors.white,
           child: Text(
             team.countryCode,
-            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 12),
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w900,
+              fontSize: 12,
+            ),
           ),
         ),
         const SizedBox(height: 10),
@@ -255,14 +279,31 @@ class _ScoreColumn extends StatelessWidget {
                 color: exact ? AppColors.lime : AppColors.mint,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Text('$points', style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w900)),
+              child: Text(
+                '$points',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
             ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _ScoreStepper(value: home, locked: locked, onChanged: onHomeChanged, keyPrefix: 'home'),
+              _ScoreStepper(
+                value: home,
+                locked: locked,
+                onChanged: onHomeChanged,
+                keyPrefix: 'home',
+              ),
               const SizedBox(width: 8),
-              _ScoreStepper(value: away, locked: locked, onChanged: onAwayChanged, keyPrefix: 'away'),
+              _ScoreStepper(
+                value: away,
+                locked: locked,
+                onChanged: onAwayChanged,
+                keyPrefix: 'away',
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -295,7 +336,9 @@ class _ScoreStepper extends StatelessWidget {
       children: [
         IconButton(
           key: ValueKey('${keyPrefix}ScoreUp'),
-          onPressed: locked ? null : () => onChanged((value + 1).clamp(0, 12).toInt()),
+          onPressed: locked
+              ? null
+              : () => onChanged((value + 1).clamp(0, 12).toInt()),
           icon: const Icon(Icons.keyboard_arrow_up_rounded),
         ),
         Container(
@@ -306,11 +349,16 @@ class _ScoreStepper extends StatelessWidget {
             color: AppColors.surfaceAlt,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Text('$value', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900)),
+          child: Text(
+            '$value',
+            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
+          ),
         ),
         IconButton(
           key: ValueKey('${keyPrefix}ScoreDown'),
-          onPressed: locked ? null : () => onChanged((value - 1).clamp(0, 12).toInt()),
+          onPressed: locked
+              ? null
+              : () => onChanged((value - 1).clamp(0, 12).toInt()),
           icon: const Icon(Icons.keyboard_arrow_down_rounded),
         ),
       ],
@@ -327,7 +375,8 @@ class _StatusPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = switch (match.status) {
-      MatchStatus.finished => prediction?.points == null ? 'Final' : '${prediction!.points} pts',
+      MatchStatus.finished =>
+        prediction?.points == null ? 'Final' : '${prediction!.points} pts',
       MatchStatus.live => 'Live',
       MatchStatus.postponed => 'Postponed',
       MatchStatus.scheduled => 'Locked',
@@ -354,7 +403,10 @@ class _PickSplit extends StatelessWidget {
       children: [
         const PointGem(size: 14, color: AppColors.lime),
         const SizedBox(width: 6),
-        Text('${item.homePickPercent}% home', style: const TextStyle(color: AppColors.textMuted)),
+        Text(
+          '${item.homePickPercent}% home',
+          style: const TextStyle(color: AppColors.textMuted),
+        ),
         const SizedBox(width: 14),
         const PointGem(size: 14),
         const SizedBox(width: 6),

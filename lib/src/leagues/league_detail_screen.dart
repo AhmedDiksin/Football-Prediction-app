@@ -43,9 +43,16 @@ class LeagueDetailScreen extends ConsumerWidget {
                         Text(
                           leagueName,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w900),
+                          style: Theme.of(context).textTheme.headlineMedium
+                              ?.copyWith(fontWeight: FontWeight.w900),
                         ),
-                        Text('${entries.length} participants', style: const TextStyle(color: AppColors.textMuted, fontSize: 18)),
+                        Text(
+                          '${entries.length} participants',
+                          style: const TextStyle(
+                            color: AppColors.textMuted,
+                            fontSize: 18,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -55,7 +62,14 @@ class LeagueDetailScreen extends ConsumerWidget {
               const Row(
                 children: [
                   Expanded(
-                    child: Text('Position', style: TextStyle(color: AppColors.textMuted, fontSize: 17, fontWeight: FontWeight.w800)),
+                    child: Text(
+                      'Position',
+                      style: TextStyle(
+                        color: AppColors.textMuted,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
                   ),
                   _LeaderboardHeaderStats(),
                 ],
@@ -73,7 +87,9 @@ class LeagueDetailScreen extends ConsumerWidget {
                           '${entry.rank}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: entry.isCurrentUser ? AppColors.mint : Colors.white,
+                            color: entry.isCurrentUser
+                                ? AppColors.mint
+                                : Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w900,
                           ),
@@ -86,13 +102,18 @@ class LeagueDetailScreen extends ConsumerWidget {
                           entry.displayName,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: entry.isCurrentUser ? AppColors.mint : Colors.white,
+                            color: entry.isCurrentUser
+                                ? AppColors.mint
+                                : Colors.white,
                             fontSize: 21,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
                       ),
-                      LeagueRowStat(points: entry.points, exactScores: entry.exactScores),
+                      LeagueRowStat(
+                        points: entry.points,
+                        exactScores: entry.exactScores,
+                      ),
                     ],
                   ),
                 ),

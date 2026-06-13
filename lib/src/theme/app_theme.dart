@@ -57,7 +57,12 @@ ThemeData buildAppTheme() {
 const leagueGradient = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
-  colors: [Color(0xfff0ff18), Color(0xff55f48e), Color(0xff20b4ff), Color(0xff1768ff)],
+  colors: [
+    Color(0xfff0ff18),
+    Color(0xff55f48e),
+    Color(0xff20b4ff),
+    Color(0xff1768ff),
+  ],
 );
 
 const cardGradient = LinearGradient(

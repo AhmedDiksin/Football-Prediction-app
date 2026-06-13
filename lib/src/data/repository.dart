@@ -6,7 +6,10 @@ abstract class PredictorRepository {
   Future<AppUser> signIn({required String email, required String password});
   Future<AppUser> signUp({required String email, required String password});
   Future<void> signOut();
-  Future<void> saveProfile({required String displayName, required int avatarColor});
+  Future<void> saveProfile({
+    required String displayName,
+    required int avatarColor,
+  });
 
   Stream<List<MatchWithPrediction>> watchMatches();
   Future<void> upsertPrediction({
