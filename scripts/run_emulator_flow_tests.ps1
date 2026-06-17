@@ -41,7 +41,7 @@ Require-Command emulator
 $deviceId = $env:FLUTTER_TEST_DEVICE_ID
 
 if (-not $deviceId) {
-  $adbDevices = adb devices | Select-String -Pattern "device$"
+  $adbDevices = adb devices | Select-String -Pattern "^emulator-\d+\s+device$"
   $online = $adbDevices | Select-Object -First 1
   if ($online) {
     $deviceId = ($online.ToString() -split "\s+")[0]
@@ -49,7 +49,15 @@ if (-not $deviceId) {
 }
 
 if (-not $deviceId) {
-  $avd = emulator -list-avds | Select-Object -First 1
+  $avds = @(emulator -list-avds)
+  $preferredAvd = $env:ANDROID_AVD_NAME
+  if ($preferredAvd -and ($avds -contains $preferredAvd)) {
+    $avd = $preferredAvd
+  } elseif ($avds -contains "wc_predictor_api36") {
+    $avd = "wc_predictor_api36"
+  } else {
+    $avd = $avds | Select-Object -First 1
+  }
   if (-not $avd) {
     throw "No Android emulator found. Create one in Android Studio first."
   }
@@ -58,10 +66,22 @@ if (-not $deviceId) {
     -FilePath "emulator" `
     -ArgumentList "-avd", $avd, "-no-window", "-no-audio", "-gpu", "swiftshader_indirect", "-no-snapshot", "-wipe-data", "-no-boot-anim" `
     -WindowStyle Hidden
-  adb wait-for-device
+
+  for ($i = 0; $i -lt 60; $i++) {
+    Start-Sleep -Seconds 2
+    $online = adb devices | Select-String -Pattern "^emulator-\d+\s+device$" | Select-Object -First 1
+    if ($online) {
+      $deviceId = ($online.ToString() -split "\s+")[0]
+      break
+    }
+  }
+  if (-not $deviceId) {
+    throw "Android emulator did not appear in adb devices."
+  }
+
   for ($i = 0; $i -lt 120; $i++) {
     Start-Sleep -Seconds 2
-    $booted = (adb shell getprop sys.boot_completed 2>$null).Trim()
+    $booted = (adb -s $deviceId shell getprop sys.boot_completed 2>$null).Trim()
     if ($booted -eq "1") {
       break
     }
@@ -69,7 +89,6 @@ if (-not $deviceId) {
   if ($booted -ne "1") {
     throw "Android emulator did not finish booting."
   }
-  $deviceId = ((adb devices | Select-String -Pattern "device$" | Select-Object -First 1).ToString() -split "\s+")[0]
 }
 
 Invoke-Native "flutter" @("pub", "get")

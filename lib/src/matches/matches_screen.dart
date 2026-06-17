@@ -137,7 +137,7 @@ class _MatchCardState extends ConsumerState<MatchCard> {
             children: [
               Expanded(
                 child: Text(
-                  '${DateFormat.Hm().format(match.kickoffAt.toLocal())} • ${match.stage}',
+                  '${DateFormat.Hm().format(match.kickoffAt.toLocal())} - ${match.stage}',
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: AppColors.textMuted,
@@ -410,7 +410,7 @@ class _PickSplit extends StatelessWidget {
         const SizedBox(width: 6),
         Expanded(
           child: Text(
-            '${item.awayPickPercent}% away • ${item.drawPickPercent}% draw',
+            '${item.awayPickPercent}% away - ${item.drawPickPercent}% draw',
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(color: AppColors.textMuted),
           ),

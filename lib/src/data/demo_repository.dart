@@ -178,54 +178,34 @@ class DemoPredictorRepository implements PredictorRepository {
   }
 
   void _seed() {
-    final mexico = Team(
-      id: 'team-mexico',
-      name: 'Mexico',
-      shortName: 'MEX',
-      countryCode: 'MX',
-    );
-    final southAfrica = Team(
-      id: 'team-south-africa',
-      name: 'South Africa',
-      shortName: 'RSA',
-      countryCode: 'ZA',
-    );
-    final southKorea = Team(
-      id: 'team-south-korea',
-      name: 'South Korea',
-      shortName: 'KOR',
-      countryCode: 'KR',
-    );
-    final czechia = Team(
-      id: 'team-czechia',
-      name: 'Czechia',
-      shortName: 'CZE',
-      countryCode: 'CZ',
-    );
-    final canada = Team(
-      id: 'team-canada',
-      name: 'Canada',
-      shortName: 'CAN',
-      countryCode: 'CA',
-    );
-    final bosnia = Team(
-      id: 'team-bosnia',
-      name: 'Bosnia',
-      shortName: 'BIH',
-      countryCode: 'BA',
-    );
-    final usa = Team(
-      id: 'team-usa',
-      name: 'United States',
-      shortName: 'USA',
-      countryCode: 'US',
-    );
-    final paraguay = Team(
-      id: 'team-paraguay',
-      name: 'Paraguay',
-      shortName: 'PAR',
-      countryCode: 'PY',
-    );
+    Team team(String id, String name, String shortName, String countryCode) =>
+        Team(
+          id: 'team-$id',
+          name: name,
+          shortName: shortName,
+          countryCode: countryCode,
+        );
+
+    final mexico = team('mexico', 'Mexico', 'MEX', 'MX');
+    final southAfrica = team('south-africa', 'South Africa', 'RSA', 'ZA');
+    final southKorea = team('south-korea', 'South Korea', 'KOR', 'KR');
+    final czechia = team('czechia', 'Czechia', 'CZE', 'CZ');
+    final canada = team('canada', 'Canada', 'CAN', 'CA');
+    final bosnia = team('bosnia', 'Bosnia', 'BIH', 'BA');
+    final usa = team('usa', 'United States', 'USA', 'US');
+    final paraguay = team('paraguay', 'Paraguay', 'PAR', 'PY');
+    final england = team('england', 'England', 'ENG', 'GB');
+    final brazil = team('brazil', 'Brazil', 'BRA', 'BR');
+    final argentina = team('argentina', 'Argentina', 'ARG', 'AR');
+    final germany = team('germany', 'Germany', 'GER', 'DE');
+    final france = team('france', 'France', 'FRA', 'FR');
+    final spain = team('spain', 'Spain', 'ESP', 'ES');
+    final japan = team('japan', 'Japan', 'JPN', 'JP');
+    final morocco = team('morocco', 'Morocco', 'MAR', 'MA');
+    final portugal = team('portugal', 'Portugal', 'POR', 'PT');
+    final netherlands = team('netherlands', 'Netherlands', 'NED', 'NL');
+    final uruguay = team('uruguay', 'Uruguay', 'URU', 'UY');
+    final senegal = team('senegal', 'Senegal', 'SEN', 'SN');
     _teams.addAll([
       mexico,
       southAfrica,
@@ -235,43 +215,143 @@ class DemoPredictorRepository implements PredictorRepository {
       bosnia,
       usa,
       paraguay,
+      england,
+      brazil,
+      argentina,
+      germany,
+      france,
+      spain,
+      japan,
+      morocco,
+      portugal,
+      netherlands,
+      uruguay,
+      senegal,
     ]);
 
     final now = DateTime.now().toUtc();
+    FixtureMatch match({
+      required String id,
+      required Team home,
+      required Team away,
+      required DateTime kickoffAt,
+      required MatchStatus status,
+      required String venue,
+      int? homeScore,
+      int? awayScore,
+    }) => FixtureMatch(
+      id: id,
+      homeTeam: home,
+      awayTeam: away,
+      kickoffAt: kickoffAt,
+      status: status,
+      homeScore: homeScore,
+      awayScore: awayScore,
+      venue: venue,
+    );
+
     _matches.addAll([
-      FixtureMatch(
+      match(
         id: 'match-1',
-        homeTeam: mexico,
-        awayTeam: southAfrica,
+        home: mexico,
+        away: southAfrica,
         kickoffAt: now.add(const Duration(minutes: 45)),
         status: MatchStatus.scheduled,
         venue: 'Mexico City',
       ),
-      FixtureMatch(
+      match(
         id: 'match-2',
-        homeTeam: southKorea,
-        awayTeam: czechia,
+        home: southKorea,
+        away: czechia,
         kickoffAt: now.add(const Duration(hours: 3)),
         status: MatchStatus.scheduled,
         venue: 'Los Angeles',
       ),
-      FixtureMatch(
+      match(
         id: 'match-3',
-        homeTeam: canada,
-        awayTeam: bosnia,
+        home: canada,
+        away: bosnia,
         kickoffAt: now.subtract(const Duration(hours: 2)),
         status: MatchStatus.finished,
         homeScore: 1,
         awayScore: 1,
         venue: 'Toronto',
       ),
-      FixtureMatch(
+      match(
         id: 'match-4',
-        homeTeam: usa,
-        awayTeam: paraguay,
+        home: usa,
+        away: paraguay,
+        kickoffAt: now.subtract(const Duration(minutes: 20)),
+        status: MatchStatus.live,
+        homeScore: 0,
+        awayScore: 0,
+        venue: 'Dallas',
+      ),
+      match(
+        id: 'match-5',
+        home: england,
+        away: brazil,
         kickoffAt: now.add(const Duration(days: 1, hours: 2)),
         status: MatchStatus.scheduled,
-        venue: 'Dallas',
+        venue: 'New York/New Jersey',
+      ),
+      match(
+        id: 'match-6',
+        home: argentina,
+        away: germany,
+        kickoffAt: now.add(const Duration(days: 1, hours: 5)),
+        status: MatchStatus.scheduled,
+        venue: 'Miami',
+      ),
+      match(
+        id: 'match-7',
+        home: france,
+        away: spain,
+        kickoffAt: now.add(const Duration(days: 1, hours: 8)),
+        status: MatchStatus.scheduled,
+        venue: 'Seattle',
+      ),
+      match(
+        id: 'match-8',
+        home: japan,
+        away: morocco,
+        kickoffAt: now.add(const Duration(days: 2, hours: 2)),
+        status: MatchStatus.scheduled,
+        venue: 'Atlanta',
+      ),
+      match(
+        id: 'match-9',
+        home: portugal,
+        away: netherlands,
+        kickoffAt: now.add(const Duration(days: 2, hours: 5)),
+        status: MatchStatus.scheduled,
+        venue: 'Boston',
+      ),
+      match(
+        id: 'match-10',
+        home: uruguay,
+        away: senegal,
+        kickoffAt: now.subtract(const Duration(days: 1, hours: 4)),
+        status: MatchStatus.finished,
+        homeScore: 2,
+        awayScore: 1,
+        venue: 'Kansas City',
+      ),
+      match(
+        id: 'match-11',
+        home: mexico,
+        away: southKorea,
+        kickoffAt: now.add(const Duration(days: 3, hours: 1)),
+        status: MatchStatus.scheduled,
+        venue: 'Guadalajara',
+      ),
+      match(
+        id: 'match-12',
+        home: canada,
+        away: usa,
+        kickoffAt: now.add(const Duration(days: 3, hours: 4)),
+        status: MatchStatus.scheduled,
+        venue: 'Vancouver',
       ),
     ]);
 
@@ -306,29 +386,50 @@ class DemoPredictorRepository implements PredictorRepository {
       ),
       LeaderboardEntry(
         userId: 'friend-5',
+        displayName: 'ayad daxan',
+        rank: 4,
+        points: 6,
+        exactScores: 0,
+      ),
+      LeaderboardEntry(
+        userId: 'friend-6',
         displayName: 'Haider',
         rank: 7,
         points: 5,
         exactScores: 1,
       ),
       LeaderboardEntry(
-        userId: 'friend-6',
+        userId: 'friend-7',
         displayName: 'Aboody',
         rank: 8,
         points: 4,
         exactScores: 0,
       ),
       LeaderboardEntry(
-        userId: 'friend-7',
+        userId: 'friend-8',
         displayName: 'Summer Oras',
         rank: 9,
         points: 2,
         exactScores: 0,
       ),
+      LeaderboardEntry(
+        userId: 'friend-9',
+        displayName: 'Abdullah Ayad',
+        rank: 10,
+        points: 0,
+        exactScores: 0,
+      ),
+      LeaderboardEntry(
+        userId: 'friend-10',
+        displayName: 'Nada Ali',
+        rank: 10,
+        points: 0,
+        exactScores: 0,
+      ),
     ]);
 
-    _leagues.add(
-      const LeagueSummary(
+    _leagues.addAll(const [
+      LeagueSummary(
         id: 'global',
         name: 'Global',
         memberCount: 689057,
@@ -337,9 +438,16 @@ class DemoPredictorRepository implements PredictorRepository {
         points: 0,
         isGlobal: true,
       ),
-    );
-    _leagues.add(
-      const LeagueSummary(
+      LeagueSummary(
+        id: 'united-kingdom',
+        name: 'United Kingdom',
+        memberCount: 90691,
+        rank: 9922,
+        totalPlayers: 90691,
+        points: 0,
+        isGlobal: true,
+      ),
+      LeagueSummary(
         id: 'daxan',
         name: 'Daxan',
         memberCount: 10,
@@ -349,7 +457,27 @@ class DemoPredictorRepository implements PredictorRepository {
         isGlobal: false,
         inviteCode: 'DAXAN',
       ),
-    );
+      LeagueSummary(
+        id: 'family-cup',
+        name: 'Family Cup',
+        memberCount: 8,
+        rank: 3,
+        totalPlayers: 8,
+        points: 0,
+        isGlobal: false,
+        inviteCode: 'FAMILY',
+      ),
+      LeagueSummary(
+        id: 'work-friends',
+        name: 'Work Friends',
+        memberCount: 14,
+        rank: 5,
+        totalPlayers: 14,
+        points: 0,
+        isGlobal: false,
+        inviteCode: 'WORK26',
+      ),
+    ]);
   }
 
   void _scorePredictionsFor(String matchId, int homeScore, int awayScore) {
@@ -412,8 +540,25 @@ class DemoPredictorRepository implements PredictorRepository {
                         (match.awayTeam.id.hashCode.abs() % 30 + 18))
                     .clamp(0, 95),
           ),
-      ]..sort((a, b) => a.match.kickoffAt.compareTo(b.match.kickoffAt)),
+      ]..sort(_compareMatchCards),
     );
+  }
+
+  int _compareMatchCards(MatchWithPrediction a, MatchWithPrediction b) {
+    final status = _statusSort(
+      a.match.status,
+    ).compareTo(_statusSort(b.match.status));
+    if (status != 0) return status;
+    return a.match.kickoffAt.compareTo(b.match.kickoffAt);
+  }
+
+  int _statusSort(MatchStatus status) {
+    return switch (status) {
+      MatchStatus.scheduled => 0,
+      MatchStatus.live => 1,
+      MatchStatus.finished => 2,
+      MatchStatus.postponed => 3,
+    };
   }
 
   void _emitLeagues() {
